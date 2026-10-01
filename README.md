@@ -7,33 +7,13 @@ distance range.
 
 How It Works
 
-UPBGE's normal Activity Culling works like this:
-
-Camera
-  |
-  |-------------------- Native Radius -------------------->
-  |
-  |       ACTIVE       |             CULLED
-
-Culling Overhaul adds a reversed radius:
-
-Camera
-  |
-  |--- Reverse Radius ---|------------- Native Radius ------------->
-  |
-  |       CULLED         |             ACTIVE             | CULLED
-  |     Too Close        |                                | Too Far
-
 This creates an activity zone between the reversed radius and UPBGE's normal Activity Culling radius.
 
 For example:
 Reverse Physics Radius: 20m
 Native Physics Radius:  100m
 
-Results in:
-0m       20m                              100m
-|---------|---------------------------------|
- SUSPENDED            ACTIVE             SUSPENDED
+when within the 20m or outer 100m it would be Culled, while being in between the two would be Active.
 
 The same system can be used independently for both Physics and Logic.
 
@@ -55,10 +35,7 @@ Installation
 
 Place the Culling Overhaul addon in your UPBGE addons directory and enable it from:
 
-Edit
-└── Preferences
-    └── Add-ons
-        └── Culling Overhaul
+Edit - Preferences - Add-ons - Install From Disk
 
 Once enabled, select a game object and open its Activity Culling settings.
 
@@ -140,13 +117,13 @@ farther away.
 More importantly, combining normal and reversed culling provides a general-purpose way to create 
 controlled activity ranges:
 
-Too Close          Desired Range            Too Far
+Too Close    |     Desired Range       |    Too Far
 
   CULLED    |          ACTIVE          |     CULLED
 ------------|--------------------------|------------
-            ^                          ^
-         Reverse                    Native
-         Radius                     Radius
+            ^          ^
+         Reverse     Native
+         Radius      Radius
 
 Physics and Logic can each have their own activity range.
 This can be useful for large scenes and open-world projects where different systems only need 
